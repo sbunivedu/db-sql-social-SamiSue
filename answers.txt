@@ -1,0 +1,32 @@
+SELECT h2.name
+FROM Highschooler h, Friend f, Highschooler h2
+WHERE h.ID = f.ID1
+        AND h2.ID = f.ID2
+        AND h.name = 'Gabriel';
+        
+SELECT name, grade
+FROM Highschooler h
+WHERE ID NOT IN (SELECT ID1 
+            FROM Likes 
+            UNION SELECT ID2 
+            FROM Likes) order by grade, name;
+
+SELECT name, grade
+FROM Highschooler
+INNER JOIN Likes ON Highschooler.ID = Likes.ID2
+    GROUP BY ID2
+    HAVING COUNT(*) > 1;
+    
+SELECT h1.name, h1.grade, h2.name, h2.grade
+FROM Highschooler h1
+    INNER JOIN Likes ON h1.ID = Likes.ID1
+    INNER JOIN Highschooler h2 ON h2.ID = Likes.ID2
+WHERE (h1.grade - h2.grade) >= 2;
+
+SELECT avg(count)
+FROM (
+  SELECT count(ID2) as count
+  FROM Friend
+  group by ID1
+) as FriendCount;
+
